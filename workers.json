@@ -1,0 +1,14 @@
+{
+  "workers": [
+    {"no_cpu": 4, "hostname": "118.138.239.241", "username": "ubuntu", "password": null, "private_key_file": "id_rsa"},
+    {"no_cpu": 4, "hostname": "118.138.239.236", "username": "ubuntu", "password": null, "private_key_file": "id_rsa"},
+    {"no_cpu": 4, "hostname": "118.138.244.81", "username": "ubuntu", "password": null, "private_key_file": "id_rsa"},
+    {"no_cpu": 4, "hostname": "118.138.244.80", "username": "ubuntu", "password": null, "private_key_file": "id_rsa"},
+    {"no_cpu": 4, "hostname": "118.138.244.78", "username": "ubuntu", "password": null, "private_key_file": "id_rsa"},
+    {"no_cpu": 4, "hostname": "118.138.244.73", "username": "ubuntu", "password": null, "private_key_file": "id_rsa"},
+    {"no_cpu": 4, "hostname": "118.138.244.79", "username": "ubuntu", "password": null, "private_key_file": "id_rsa"},
+    {"no_cpu": 4, "hostname": "118.138.244.77", "username": "ubuntu", "password": null, "private_key_file": "id_rsa"},
+    {"no_cpu": 4, "hostname": "118.138.244.75", "username": "ubuntu", "password": null, "private_key_file": "id_rsa"},
+    {"no_cpu": 4, "hostname": "118.138.244.72", "username": "ubuntu", "password": null, "private_key_file": "id_rsa"}
+  ]
+}

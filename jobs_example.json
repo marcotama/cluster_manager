@@ -1,0 +1,28 @@
+{
+  "local_preparation": [
+    {
+      "create_folders": [
+        "./logs/"
+      ]
+    }
+  ],
+
+
+  "jobs": [
+    {
+      "commands": [
+        "date >> datetime.log"
+      ],
+
+      "required_files": [
+        {"local_path": "message.txt", "remote_path": "message.txt"}
+      ],
+
+      "return_files": [
+        {"local_path": "datetime.log", "remote_path": "datetime.txt"}
+      ],
+
+      "id": "job_1"
+    }
+  ]
+}
