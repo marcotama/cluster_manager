@@ -1,9 +1,10 @@
 from cluster_manager import Host, Job, TransferableFile, create_worker, run_job_on_worker
 from joblib import Parallel, delayed
+import paramiko
 import os
 
-CONFIG_PT1_FILENAME = 'config_pt1.sh' # to be run as root
-CONFIG_PT2_FILENAME = 'config_pt2.sh' # to be run as user, in his/her home
+CONFIG_PT1_FILENAME = 'config_pt1.sh'  # to be run as root
+CONFIG_PT2_FILENAME = 'config_pt2.sh'  # to be run as user, in his/her home
 USER = 'seba'
 USER_HOME = '/home/seba'
 USER_PRIVATE_KEY_FILE_PATH = '/home/marco/id_seba'
@@ -67,15 +68,18 @@ with open(CONFIG_PT2_FILENAME, 'w') as f:
 
 private_key_filename = '/home/marco/.ssh/id_rsa'
 
+
 def config_host(sudoer_user, hostname):
     # print('Connecting to {hostname} as {user}'.format(hostname=hostname, user=sudoer_user))
-    host_as_sudoer = Host(no_cpu=4, hostname=hostname, username=sudoer_user, password=None, key_filename=private_key_filename)
+    host_as_sudoer = Host(no_cpu=4, hostname=hostname, username=sudoer_user, password=None,
+                          key_filename=private_key_filename)
     worker_as_sudoer = create_worker(host_as_sudoer)
     job1 = Job(
         command='sudo bash {config_pt1_filename}'.format(config_pt1_filename=CONFIG_PT1_FILENAME, user=USER),
         required_files=[
             TransferableFile(local_path=CONFIG_PT1_FILENAME, remote_path=CONFIG_PT1_FILENAME),
-            TransferableFile(local_path=USER_PUBLIC_KEY_FILE_PATH, remote_path=os.path.basename(USER_PUBLIC_KEY_FILE_PATH))
+            TransferableFile(local_path=USER_PUBLIC_KEY_FILE_PATH,
+                             remote_path=os.path.basename(USER_PUBLIC_KEY_FILE_PATH))
         ],
         return_files=[],
         id=None
@@ -85,7 +89,8 @@ def config_host(sudoer_user, hostname):
         f.write(out_pt1 + err_pt1)
 
     # print('Connecting to {hostname} as {user}'.format(hostname=hostname, user=USER))
-    host_as_new_user = Host(no_cpu=4, hostname=hostname, username=USER, password=None, key_filename=USER_PRIVATE_KEY_FILE_PATH)
+    host_as_new_user = Host(no_cpu=4, hostname=hostname, username=USER, password=None,
+                            key_filename=USER_PRIVATE_KEY_FILE_PATH)
     worker_as_new_user = create_worker(host_as_new_user)
     job2 = Job(
         command='bash {config_pt2_filename}'.format(config_pt2_filename=CONFIG_PT2_FILENAME, user=USER),
@@ -100,32 +105,24 @@ def config_host(sudoer_user, hostname):
         f.write(out_pt2 + err_pt2)
 
 
-
-
-
-
-import paramiko
 paramiko.util.log_to_file("filename.log")
 
 # config_host('ubuntu', '118.138.244.72')
 
 
 with open('my_workers.txt', 'r') as f:
-    hostnames = [(line.split('@')[0].strip(), line.split('@')[1].strip(), line.split('@')[2].strip()) for line in f.readlines()]
+    hostnames = [(line.split('@')[0].strip(), line.split('@')[1].strip(), line.split('@')[2].strip())
+                 for line in f.readlines()]
 
 # Multi-threaded
-results = Parallel(len(hostnames), backend='threading')(delayed(config_host)(user, hostname) for _, user, hostname in hostnames)
+results = Parallel(len(hostnames), backend='threading')(delayed(config_host)(user, hostname)
+                                                        for _, user, hostname in hostnames)
 
 # results = []
 # for user, hostname in hostnames:
 #     results.append(config_host(user, hostname))
 
 # print(''.join(out + err for out, err in results))
-
-
-
-
-
 
 
 # Clean
