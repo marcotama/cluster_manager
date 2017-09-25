@@ -12,7 +12,7 @@ import argparse
 import json
 import logging
 import random
-from cluster_manager import ClusterManager, Job, Host, TransferableFile
+from .cluster_manager import ClusterManager, Job, Host, TransferableFile
 
 logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', level=logging.INFO,
                     datefmt='%a, %d %b %Y %H:%M:%S')
